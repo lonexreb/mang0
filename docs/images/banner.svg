@@ -7,23 +7,37 @@
       <stop offset="100%" stop-color="#000000"/>
     </radialGradient>
 
-    <radialGradient id="mango" cx="38%" cy="32%" r="78%">
-      <stop offset="0%" stop-color="#fff3a8"/>
+    <!-- mango skin: yellow belly → orange body → red blush at the shoulder -->
+    <radialGradient id="mangoBody" cx="42%" cy="68%" r="80%">
+      <stop offset="0%" stop-color="#fff48a"/>
       <stop offset="22%" stop-color="#ffd24a"/>
-      <stop offset="55%" stop-color="#ff8a1f"/>
-      <stop offset="82%" stop-color="#e63a13"/>
+      <stop offset="50%" stop-color="#ff9b1a"/>
+      <stop offset="78%" stop-color="#ff5a14"/>
       <stop offset="100%" stop-color="#7a1605"/>
     </radialGradient>
 
-    <radialGradient id="glow" cx="50%" cy="55%" r="55%">
-      <stop offset="0%" stop-color="#ff8a1f" stop-opacity="0.65"/>
-      <stop offset="55%" stop-color="#ff3a13" stop-opacity="0.18"/>
+    <!-- red blush patch on the shoulder -->
+    <radialGradient id="blush" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c11212" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#a01510" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#a01510" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- subtle green chlorophyll near the stem -->
+    <radialGradient id="greenTinge" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7a9c2a" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#7a9c2a" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="ambient" cx="50%" cy="55%" r="55%">
+      <stop offset="0%" stop-color="#ff8a1f" stop-opacity="0.55"/>
+      <stop offset="55%" stop-color="#ff3a13" stop-opacity="0.15"/>
       <stop offset="100%" stop-color="#ff3a13" stop-opacity="0"/>
     </radialGradient>
 
     <linearGradient id="leaf" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#5fa845"/>
-      <stop offset="100%" stop-color="#2c5a1f"/>
+      <stop offset="100%" stop-color="#1f3f15"/>
     </linearGradient>
 
     <linearGradient id="flame" x1="0%" y1="100%" x2="0%" y2="0%">
@@ -50,101 +64,130 @@
   <!-- backdrop -->
   <rect width="1200" height="360" fill="url(#bg)"/>
 
-  <!-- subtle scanlines for AI-native vibe -->
+  <!-- subtle scanlines -->
   <g opacity="0.05">
-    <line x1="0" y1="80" x2="1200" y2="80" stroke="#ff8a1f" stroke-width="1"/>
-    <line x1="0" y1="160" x2="1200" y2="160" stroke="#ff8a1f" stroke-width="1"/>
-    <line x1="0" y1="240" x2="1200" y2="240" stroke="#ff8a1f" stroke-width="1"/>
-    <line x1="0" y1="320" x2="1200" y2="320" stroke="#ff8a1f" stroke-width="1"/>
+    <line x1="0" y1="80"  x2="1200" y2="80"  stroke="#ff8a1f"/>
+    <line x1="0" y1="160" x2="1200" y2="160" stroke="#ff8a1f"/>
+    <line x1="0" y1="240" x2="1200" y2="240" stroke="#ff8a1f"/>
+    <line x1="0" y1="320" x2="1200" y2="320" stroke="#ff8a1f"/>
   </g>
 
   <!-- ambient glow behind the mango -->
-  <ellipse cx="245" cy="195" rx="240" ry="190" fill="url(#glow)" filter="url(#soft)"/>
+  <ellipse cx="245" cy="200" rx="240" ry="200" fill="url(#ambient)" filter="url(#soft)"/>
 
-  <!-- flame plume rising from behind the mango -->
-  <g transform="translate(245 60)" opacity="0.85" filter="url(#heat)">
+  <!-- flame plume rising from behind, above the mango -->
+  <g transform="translate(245 30)" opacity="0.85" filter="url(#heat)">
     <path d="M 0 130
              C -36 90, -48 40, -18 0
              C -10 30, 6 40, 18 22
-             C 36 42, 48 80, 28 120
-             Z"
+             C 36 42, 48 80, 28 120 Z"
           fill="url(#flame)"/>
     <path d="M -8 110
              C -22 80, -22 50, 0 30
              C 6 50, 16 56, 24 44
-             C 30 70, 22 96, 8 116
-             Z"
+             C 30 70, 22 96, 8 116 Z"
           fill="#ffd24a" opacity="0.85"/>
   </g>
 
-  <!-- mango body — asymmetric teardrop -->
-  <g transform="translate(245 195)">
-    <path d="M 0 -120
-             C 90 -120, 160 -60, 160 30
-             C 160 110, 80 170, -10 170
-             C -110 170, -170 100, -160 10
-             C -150 -80, -90 -120, 0 -120 Z"
-          fill="url(#mango)"/>
+  <!--
+    MANGO BODY — proper mango shape, not an orange.
+    Mangos are asymmetric: rounder at the bottom, with a beak/sinus
+    where the stem meets the shoulder. Slightly tilted in 3/4 view.
+    Drawn as one continuous Bezier with the stem dimple on the upper-left.
+  -->
+  <g transform="translate(245 215) rotate(-12)">
 
-    <!-- specular highlight -->
-    <ellipse cx="-55" cy="-55" rx="55" ry="32" fill="#fff" opacity="0.32" transform="rotate(-25)"/>
-    <ellipse cx="-30" cy="-70" rx="22" ry="10" fill="#fff" opacity="0.55" transform="rotate(-25)"/>
+    <!-- the body -->
+    <path d="
+      M -30 -130
+      C  10 -135,  60 -125,  100 -90
+      C 150 -50, 175  10, 165  70
+      C 152 130,  92 165,   18 168
+      C -60 170, -132 132, -150  68
+      C -168  10, -150 -50, -110 -90
+      C  -85 -115, -60 -128, -30 -130
+      Z"
+      fill="url(#mangoBody)"/>
 
-    <!-- skin freckles -->
-    <g fill="#7a1605" opacity="0.45">
-      <circle cx="40" cy="-40" r="2"/>
-      <circle cx="80" cy="-10" r="2.5"/>
-      <circle cx="60" cy="40" r="2"/>
-      <circle cx="-20" cy="60" r="2"/>
-      <circle cx="20" cy="100" r="2.5"/>
-      <circle cx="-90" cy="20" r="2"/>
-      <circle cx="-110" cy="-30" r="1.8"/>
-      <circle cx="100" cy="60" r="2"/>
-      <circle cx="-60" cy="120" r="2"/>
+    <!-- shoulder blush — red patch on the sun side -->
+    <ellipse cx="65" cy="-40" rx="80" ry="55" fill="url(#blush)" transform="rotate(-15 65 -40)"/>
+    <ellipse cx="40" cy="20"  rx="60" ry="40" fill="url(#blush)" opacity="0.6" transform="rotate(-10 40 20)"/>
+
+    <!-- subtle green near the stem (chlorophyll, classic mango look) -->
+    <ellipse cx="-70" cy="-95" rx="50" ry="30" fill="url(#greenTinge)" transform="rotate(-30 -70 -95)"/>
+
+    <!-- specular highlights — broad soft, then a tight glint -->
+    <ellipse cx="-55" cy="-30" rx="55" ry="28" fill="#fff" opacity="0.30" transform="rotate(-30 -55 -30)"/>
+    <ellipse cx="-40" cy="-50" rx="22" ry="9"  fill="#fff" opacity="0.55" transform="rotate(-30 -40 -50)"/>
+
+    <!-- skin lenticels (the small dots on real mango skin) -->
+    <g fill="#5a1004" opacity="0.55">
+      <circle cx="40"  cy="-70" r="1.6"/>
+      <circle cx="80"  cy="-30" r="1.8"/>
+      <circle cx="105" cy="20"  r="1.6"/>
+      <circle cx="60"  cy="60"  r="1.6"/>
+      <circle cx="20"  cy="100" r="1.8"/>
+      <circle cx="-20" cy="80"  r="1.4"/>
+      <circle cx="-90" cy="40"  r="1.4"/>
+      <circle cx="-110" cy="-10" r="1.4"/>
+      <circle cx="100" cy="80"  r="1.6"/>
+      <circle cx="-50" cy="130" r="1.6"/>
+      <circle cx="130" cy="-10" r="1.4"/>
+      <circle cx="-30" cy="-30" r="1.2"/>
     </g>
 
+    <!-- stem dimple/sinus -->
+    <path d="M -45 -125 C -30 -118, -10 -118, 5 -126"
+          stroke="#5a1004" stroke-width="2" fill="none" opacity="0.55"/>
+
     <!-- stem -->
-    <rect x="-6" y="-138" width="12" height="22" rx="3" fill="#3d1f0a"/>
+    <path d="M -22 -132 C -22 -150, -8 -156, -2 -148 L 4 -132 Z"
+          fill="#3d1f0a"/>
 
     <!-- leaf -->
-    <path d="M 6 -132
-             C 56 -160, 110 -150, 130 -110
-             C 92 -116, 56 -120, 18 -120 Z"
+    <path d="M -2 -150
+             C 50 -178, 110 -170, 140 -130
+             C 92 -136, 50 -140, 8 -140 Z"
           fill="url(#leaf)"/>
-    <path d="M 18 -126
-             C 60 -140, 96 -136, 122 -118"
-          fill="none" stroke="#1f3f15" stroke-width="1.5" opacity="0.7"/>
+    <path d="M 8 -144 C 56 -158, 96 -154, 128 -136"
+          fill="none" stroke="#1f3f15" stroke-width="1.4" opacity="0.7"/>
   </g>
 
-  <!-- wordmark -->
+  <!--
+    WORDMARK — "mang" + theta-style 0 (circle with horizontal bar).
+    Renders "mang" as text, then draws a θ-zero immediately after it
+    that matches the cap-height and stroke weight.
+  -->
   <g transform="translate(520 220)">
     <text font-family="'SF Pro Display', 'Inter', 'Helvetica Neue', system-ui, sans-serif"
           font-weight="900"
-          font-size="170"
+          font-size="180"
           letter-spacing="-8"
-          fill="url(#wordmark)">mang0</text>
+          fill="url(#wordmark)">mang</text>
 
-    <!-- the 0 has a small flame inside it for AI-native nod -->
-    <g transform="translate(442 -88)" opacity="0.92">
-      <path d="M 0 38
-               C -10 20, -10 0, 4 -16
-               C 6 -2, 12 2, 16 -8
-               C 22 4, 22 22, 10 34
-               Z" fill="url(#flame)"/>
+    <!-- θ-style zero, positioned just after "mang" baseline-aligned -->
+    <g transform="translate(372 -130)">
+      <!-- outer ring -->
+      <ellipse cx="65" cy="65" rx="60" ry="65"
+               fill="none"
+               stroke="url(#wordmark)"
+               stroke-width="22"/>
+      <!-- horizontal bar — the theta defining feature -->
+      <rect x="20" y="55" width="90" height="22" rx="2" fill="url(#wordmark)"/>
     </g>
 
-    <!-- fire glyph after wordmark -->
-    <g transform="translate(540 -110) scale(1.4)" filter="url(#heat)">
+    <!-- fire glyph after the wordmark -->
+    <g transform="translate(550 -120) scale(1.5)" filter="url(#heat)">
       <path d="M 18 80
                C -10 60, -14 30, 6 4
                C 8 18, 18 22, 22 12
-               C 30 26, 36 50, 24 72
-               Z" fill="url(#flame)"/>
+               C 30 26, 36 50, 24 72 Z"
+            fill="url(#flame)"/>
       <path d="M 18 70
                C 4 56, 4 36, 16 22
                C 18 32, 24 36, 28 28
-               C 32 42, 28 58, 20 68
-               Z" fill="#ffd24a" opacity="0.9"/>
+               C 32 42, 28 58, 20 68 Z"
+            fill="#ffd24a" opacity="0.9"/>
     </g>
   </g>
 
