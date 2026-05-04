@@ -1,0 +1,24 @@
+name: Thermal shutdown — EC zeros charge current at 60°C
+version: 1
+
+# This scenario requires LTC2943 stub configured to report >=60°C
+# in the temperature register. Wokwi's i2c-device stub supports
+# scripted register responses via attrs.
+
+steps:
+  - delay: 1.5s
+
+  # When LTC2943 returns a temperature code corresponding to >=60C,
+  # the EC writes 0x0000 to BQ25713 ChargeCurrent (LSB at 0x02).
+  # Wokwi captures the I2C transaction; we assert it.
+  - expect-i2c:
+      device: bq25713
+      register: 0x02
+      value: 0x00
+      timeout: 5s
+
+  - expect-i2c:
+      device: bq25713
+      register: 0x03
+      value: 0x00
+      timeout: 5s

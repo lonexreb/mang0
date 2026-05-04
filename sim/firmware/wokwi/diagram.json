@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "author": "mang0",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-s3-devkitc-1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-i2c-device",
+      "id": "husb238",
+      "top": -150,
+      "left": 200,
+      "attrs": {
+        "address": "0x08",
+        "label": "HUSB238 (USB-PD)"
+      }
+    },
+    {
+      "type": "wokwi-i2c-device",
+      "id": "bq25713",
+      "top": -50,
+      "left": 200,
+      "attrs": {
+        "address": "0x6B",
+        "label": "BQ25713 (charger)"
+      }
+    },
+    {
+      "type": "wokwi-i2c-device",
+      "id": "ltc2943",
+      "top": 50,
+      "left": 200,
+      "attrs": {
+        "address": "0x64",
+        "label": "LTC2943 (gauge)"
+      }
+    },
+    { "type": "wokwi-led", "id": "led1", "top": 200, "left": 50,  "attrs": { "color": "white" } },
+    { "type": "wokwi-led", "id": "led2", "top": 200, "left": 90,  "attrs": { "color": "white" } },
+    { "type": "wokwi-led", "id": "led3", "top": 200, "left": 130, "attrs": { "color": "white" } },
+    { "type": "wokwi-led", "id": "led4", "top": 200, "left": 170, "attrs": { "color": "white" } },
+    { "type": "wokwi-led", "id": "led5", "top": 200, "left": 210, "attrs": { "color": "white" } }
+  ],
+  "connections": [
+    ["esp:2",  "husb238:SDA",  "green",  []],
+    ["esp:2",  "bq25713:SDA",  "green",  []],
+    ["esp:2",  "ltc2943:SDA",  "green",  []],
+    ["esp:1",  "husb238:SCL",  "yellow", []],
+    ["esp:1",  "bq25713:SCL",  "yellow", []],
+    ["esp:1",  "ltc2943:SCL",  "yellow", []],
+    ["esp:12", "led1:A", "white", []],
+    ["esp:13", "led2:A", "white", []],
+    ["esp:14", "led3:A", "white", []],
+    ["esp:15", "led4:A", "white", []],
+    ["esp:16", "led5:A", "white", []],
+    ["led1:C", "esp:GND", "black", []],
+    ["led2:C", "esp:GND", "black", []],
+    ["led3:C", "esp:GND", "black", []],
+    ["led4:C", "esp:GND", "black", []],
+    ["led5:C", "esp:GND", "black", []]
+  ]
+}

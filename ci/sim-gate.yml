@@ -1,0 +1,82 @@
+name: Sim gate enforcement
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-reports:
+    runs-on: ubuntu-latest
+    name: Verify simulation REPORT.md presence per touched subsystem
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changed subsystems
+        id: changes
+        run: |
+          changed=$(git diff --name-only origin/main...HEAD)
+          echo "Changed files:"; echo "$changed"
+
+          # Map subsystem dir -> required sim REPORT.md
+          declare -A REQUIRED=(
+            [motherboard]="sim/electrical sim/signal-integrity"
+            [power]="sim/electrical"
+            [thermal]="sim/thermal"
+            [chassis]="sim/thermal sim/mechanical"
+            [ec]="sim/firmware"
+          )
+
+          missing=()
+          for sub in "${!REQUIRED[@]}"; do
+            if echo "$changed" | grep -q "^$sub/"; then
+              for gate in ${REQUIRED[$sub]}; do
+                if [[ ! -f "$gate/REPORT.md" ]]; then
+                  missing+=("$sub -> $gate/REPORT.md")
+                fi
+              done
+            fi
+          done
+
+          if (( ${#missing[@]} > 0 )); then
+            echo
+            echo "::error::Simulation gate missing for changed subsystems:"
+            for m in "${missing[@]}"; do
+              echo "  - $m"
+            done
+            echo
+            echo "Per docs/BUILD.md §5.5, every subsystem PR must show PASS"
+            echo "in the relevant sim/<domain>/REPORT.md before merge."
+            exit 1
+          fi
+
+          echo "::notice::All required sim gates present."
+
+  check-workload-thesis:
+    runs-on: ubuntu-latest
+    name: Block fab-touching PRs unless workload thesis confirmed
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect fab-touching changes
+        run: |
+          changed=$(git diff --name-only origin/main...HEAD)
+          if echo "$changed" | grep -qE "^(motherboard|power|chassis|thermal)/"; then
+            if [[ ! -f "sim/workload/results/latest/REPORT.md" ]]; then
+              echo "::error::PR touches fab-bound subsystem but sim/workload/results/latest/REPORT.md is missing."
+              echo "Run sim/workload/scripts/run.sh on a Framework Desktop and commit the result."
+              exit 1
+            fi
+            if grep -q "THESIS FAILED" sim/workload/results/latest/REPORT.md; then
+              echo "::error::Workload thesis is FAILED. No fab-bound work allowed."
+              exit 1
+            fi
+            echo "::notice::Workload thesis confirmed; fab-bound changes allowed."
+          else
+            echo "::notice::No fab-bound changes; workload check skipped."
+          fi

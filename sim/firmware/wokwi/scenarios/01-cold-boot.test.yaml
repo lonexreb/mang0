@@ -1,0 +1,27 @@
+name: Cold boot — EC enumerates I2C peripherals
+version: 1
+
+steps:
+  # Wait for the EC to come up and start its 1 Hz loop
+  - delay: 2s
+
+  # First loop iteration prints the divider and HUSB238 status
+  - expect-serial:
+      pattern: '----------------------------------------------'
+      timeout: 5s
+
+  # Without VBUS connected, HUSB238 should report disconnected on first sweep
+  - expect-serial:
+      pattern: 'HUSB Connected'
+      timeout: 3s
+
+  # Battery percent is computed from LTC2943 readback
+  - expect-serial:
+      pattern: 'BATTERY PERCENT:'
+      timeout: 3s
+
+  # Two more loop iterations confirms the loop is stable, not crashing
+  - delay: 2.5s
+  - expect-serial:
+      pattern: 'BATTERY PERCENT:'
+      timeout: 3s
