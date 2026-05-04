@@ -15,7 +15,6 @@ jobs:
           fetch-depth: 0
 
       - name: Detect changed subsystems
-        id: changes
         run: |
           changed=$(git diff --name-only origin/main...HEAD)
           echo "Changed files:"; echo "$changed"
@@ -53,30 +52,3 @@ jobs:
           fi
 
           echo "::notice::All required sim gates present."
-
-  check-workload-thesis:
-    runs-on: ubuntu-latest
-    name: Block fab-touching PRs unless workload thesis confirmed
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Detect fab-touching changes
-        run: |
-          changed=$(git diff --name-only origin/main...HEAD)
-          if echo "$changed" | grep -qE "^(motherboard|power|chassis|thermal)/"; then
-            if [[ ! -f "sim/workload/results/latest/REPORT.md" ]]; then
-              echo "::error::PR touches fab-bound subsystem but sim/workload/results/latest/REPORT.md is missing."
-              echo "Run sim/workload/scripts/run.sh on a Framework Desktop and commit the result."
-              exit 1
-            fi
-            if grep -q "THESIS FAILED" sim/workload/results/latest/REPORT.md; then
-              echo "::error::Workload thesis is FAILED. No fab-bound work allowed."
-              exit 1
-            fi
-            echo "::notice::Workload thesis confirmed; fab-bound changes allowed."
-          else
-            echo "::notice::No fab-bound changes; workload check skipped."
-          fi

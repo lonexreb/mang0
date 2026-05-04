@@ -370,68 +370,21 @@ Use FLIR ETS320 or equivalent for spot validation.
 
 ## 5b. Phase 5.5 — Simulation gate
 
-**Nothing goes to fab until simulation passes.** A $1,500 motherboard scrap, a $400 chassis re-CNC, or a 4-week vapor-chamber respin all hurt enough to justify a few weeks of CFD and SPICE.
+**Nothing goes to fab until simulation passes.** A $1,500 motherboard scrap, a $400 chassis re-CNC, or a 4-week vapor-chamber respin all hurt enough to justify a few weeks of CFD and SPICE. Scope is strictly the laptop's physical/electrical behavior — see [`sim/`](../sim/) for the full pipeline.
 
-Full pipeline lives in [`sim/`](../sim/). Six domains, each with a gate document the lead must check off:
+Five domains, each with a gate document the lead must check off:
 
 | Domain | Tool | Gates |
 |---|---|---|
-| [sim/workload/](../sim/workload/) | Real Framework Desktop ($1,999) running ollama/llama.cpp | **Run this first.** Project-kill switch — if Strix Halo can't hit the tok/s targets on real silicon, no PCB work saves it. |
 | [sim/thermal/](../sim/thermal/) | OpenFOAM `chtMultiRegionFoam` + ParaView + Blender | Vapor chamber + dual blower keeps Strix Halo <95 °C under sustained 55 W |
-| [sim/mechanical/](../sim/mechanical/) | Autodesk Fusion (Claude MCP) + FreeCAD FEM | Chassis stiffness, hinge fatigue, drop test, vapor chamber pocket fit |
+| [sim/mechanical/](../sim/mechanical/) | Autodesk Fusion or FreeCAD FEM | Chassis stiffness, hinge fatigue, drop test, vapor chamber pocket fit |
 | [sim/electrical/](../sim/electrical/) | KiCad + ngspice | Power-tree sequencing per AMD PDG, VDDCR_SOC load step, VDD_MEM ripple |
 | [sim/signal-integrity/](../sim/signal-integrity/) | OpenEMS + KiCad length tuner | USB4/PCIe 4.0/LPDDR5X eyes + length-match |
 | [sim/firmware/](../sim/firmware/) | QEMU (coreboot) + Wokwi (ESP32-S3) | Boot flow, EC state machine, fan PID, OpenTitan reset/recover |
 
-### 5.5.1 Why this is finally tractable
+The thermal pipeline follows [Antmicro's April 2026 active-cooling flow](https://antmicro.com/blog/2026/04/simulating-active-cooling-using-a-cfd-based-flow), already validated on a Jetson AGX Thor in a CNC enclosure — directly analogous to mang0's Strix Halo + vapor chamber problem.
 
-Two shifts in 2026 made simulation-first viable for a small team:
-
-1. **Antmicro published a complete OpenFOAM → ParaView → Blender pipeline** for active cooling on a CNC-milled enclosure with Jetson AGX Thor — directly analogous to mang0's Strix Halo + vapor chamber problem. ([blog](https://antmicro.com/blog/2026/04/simulating-active-cooling-using-a-cfd-based-flow))
-
-2. **Anthropic's April 2026 Creative Connectors** ([news](https://www.anthropic.com/news/claude-for-creative-work)) put Claude inside Blender and Fusion via MCP, collapsing the iteration loop from 30 min/cycle to ~2 min/cycle. The repo's [`.mcp.json`](../.mcp.json) wires it up.
-
-### 5.5.2 The "kill switch": run workload validation FIRST
-
-Before any sim work on the laptop itself, **buy a Framework Desktop ($1,999, 128 GB, Strix Halo) and run [`sim/workload/`](../sim/workload/) benchmarks.** This is path A from the BOM (you'd buy this anyway to harvest the SoC) and it answers the only question that matters: *does the AI thesis actually hold on this silicon?*
-
-Acceptance:
-
-| Model | Min tok/s | Stretch |
-|---|---|---|
-| Qwen3-30B-A3B | 30 | 50 |
-| Llama 3.3 70B | 4 | 7 |
-| GPT-OSS 120B | 25 | 35 |
-| Mistral 7B | 60 | 90 |
-
-If any **min** target fails, project pauses for explicit re-scope. No PCB work proceeds.
-
-### 5.5.3 Iteration loop with the connectors
-
-Once gates 1 (workload) and 2 (thermal) are open, the design loop is:
-
-```
-You (in chat):     "The package is hitting 102 °C in the new vent layout. Try widening
-                    the rear exhaust 2 mm and re-run."
-
-Claude (Fusion):   - opens chassis.f3d
-                   - locates the rear-exhaust feature
-                   - mutates the parameter
-                   - re-exports STEP
-
-Claude (Blender):  - re-imports STEP
-                   - re-meshes via snappyHexMesh
-                   - kicks off chtMultiRegionFoam
-                   - waits, then renders the heat-map
-
-You:               looks at result, decides next move.
-
-Total wall time:   ~2 min vs ~30 min hand-driven.
-```
-
-Without the connectors this loop is the wall the project hits. With them it's a coffee break.
-
-### 5.5.4 Gate review
+### 5.5.1 Gate review
 
 Before any subsystem progresses to Phase 6 (Fabrication), the relevant `sim/<domain>/REPORT.md` must exist on `main` and show **PASS** for every threshold. CI enforces presence; humans enforce content.
 
