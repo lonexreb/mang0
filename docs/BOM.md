@@ -175,22 +175,51 @@ All TI parts available at [Mouser](https://www.mouser.com/) and [DigiKey](https:
 
 ## Totals
 
-| Category | Single unit (Path A) | Batch of 5 |
+The "1 unit" column is what one finished laptop actually costs.
+
+The "+ first-build spares kit" column is what you'll *actually spend* on your first build — because PCB fab MOQ is 5 boards per design and you'll smoke 1–2 PCBs during bring-up. Only PCBs and a handful of cheap small parts (caps, connectors, a couple of TI ICs that go up in smoke first) need to be bought in spare quantity. **You do not need 5 SoCs, 5 displays, or 5 batteries.**
+
+### Per-laptop BOM
+
+| Category | 1 unit (Path A) |
+|---|---|
+| Compute — Framework Desktop $1,999 + Hailo $249 + OpenTitan $100 | **$2,348** |
+| Storage — 2 × Samsung 990 PRO 2 TB @ $180 | $360 |
+| Display — ATNA33TP11 + connectors | $250 |
+| Wireless — MT7925 + antennas | $25 |
+| Power-tree ICs | $80 |
+| Battery — 4 × Molicel P50B + balance flex | $50 |
+| Cooling — vapor chamber + 2 blowers + thermal pads | $100 |
+| I/O + audio + sensors + EC | $80 |
+| Keyboard + trackpad | $150 |
+| Chassis & mechanical | $550 |
+| 140 W USB-C charger | $90 |
+| **Parts subtotal** | **$4,083** |
+| PCBA fabrication (one of each board, but you'll get 5 from fab MOQ) | **$1,500** |
+| **Per-laptop total** | **~$5,583** |
+
+### First-build spares kit (one-time, on top of the above)
+
+| Item | Why | Cost |
 |---|---|---|
-| Compute (Framework Desktop $1,999 + Hailo $249 + OpenTitan $100) | **$2,348** | $11,250 |
-| Storage (2× 990 PRO @ $180) | $360 | $1,800 |
-| Display | $250 | $1,200 |
-| Wireless | $25 | $125 |
-| Power tree | $80 | $350 |
-| Battery (fallback Molicel) | $50 | $250 |
-| Cooling | $100 | $400 |
-| I/O + audio + sensors + EC | $80 | $300 |
-| Keyboard + trackpad | $150 | $750 |
-| Chassis & mechanical | $550 | $2,200 |
-| Charger | $90 | $450 |
-| **Subtotal parts** | **$4,083** | **$19,075** |
-| PCBA fabrication (5 boards × $300/board) | $1,500 | $4,500 |
-| **TOTAL** | **~$5,583** | **~$23,575** |
+| 4 spare PCBs of each design | MOQ already gave you 5; no extra cost | $0 |
+| 1 spare TPS65987DDH PD controller | First IC to die from a hot-plug short | $4 |
+| 1 spare BQ25713 charger | Ditto | $7 |
+| 2 spare TPS53676 + ferrites for VDDCR_SOC | Multiphase rails are unforgiving | $20 |
+| Decoupling caps spares lot | You will lose tweezer-launched 0402s | $15 |
+| 2 spare USB-C receptacles | Easy to bridge during reflow | $8 |
+| 1 spare Hailo-10H | Nice-to-have, not required | $249 |
+| 1 spare ESP32-S3 module | $4, no reason not to | $4 |
+| **Spares kit total (without Hailo)** | | **~$58** |
+| **Spares kit total (with Hailo)** | | **~$307** |
+
+### Bottom line
+
+| Scenario | Cost |
+|---|---|
+| One laptop, hope nothing breaks | **~$5,583** |
+| One laptop + sane spares kit (no spare Hailo) | **~$5,641** |
+| One laptop + cautious spares kit (with spare Hailo) | **~$5,890** |
 
 > **Reality check:** the v1 anyon_e BOM was ~$1,500 in parts. mang0 is ~3.7× the cost, almost entirely driven by the Strix Halo + 128 GB memory. Without that, you're back at v1's price; with it, you have a laptop that runs 70B-parameter LLMs locally. Choose accordingly.
 
