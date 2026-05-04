@@ -92,19 +92,31 @@ Before you draw a single net, land these:
 
 ### 0.5 Budget reality check
 
-| Item | Single unit (DIY) | Small batch of 5 |
-|---|---|---|
-| PCBA (5 boards × ~$300) | $1,500 | $4,500 |
-| Strix Halo BGA chip + 128 GB LPDDR5X | $1,800–$2,400 | $9,000+ |
-| OLED panel | $400 | $1,800 |
-| Hailo-10H | $250 | $1,000 |
-| OpenTitan chip | $50–$150 | $500 |
-| Battery cells + BMS | $120 | $500 |
-| CNC chassis (anodized aluminum) | $400–$800 | $1,500 |
-| Misc (connectors, NVMe, WiFi, fans, vapor chamber, hardware) | $400 | $1,800 |
-| **Total** | **~$4,900–$5,200** | **~$20,600** |
+Per-laptop, May 2026 pricing. Full vendor links and per-line breakdown live in [`BOM.md`](./BOM.md).
 
-A first prototype that works costs ~$5K of parts and ~$1.5K of bench tools you didn't already have.
+| Item | Per-laptop cost |
+|---|---|
+| Compute — Framework Desktop $1,999 (Strix Halo + 128 GB harvest) + Hailo-10H $249 + OpenTitan $100 | $2,348 |
+| Storage — 2 × Samsung 990 PRO 2 TB | $360 |
+| Display — ATNA33TP11 4K AMOLED + connectors | $250 |
+| Wireless — MT7925 + antennas | $25 |
+| Power-tree ICs | $80 |
+| Battery — 4 × Molicel P50B + balance flex | $50 |
+| Cooling — vapor chamber + 2 blowers + thermal pads | $100 |
+| I/O + audio + sensors + EC | $80 |
+| Keyboard + trackpad | $150 |
+| CNC chassis + anodize + hinge + screws | $550 |
+| 140 W USB-C charger | $90 |
+| PCBA fabrication (one-of-each set; fab MOQ gives you 5 of each board free) | $1,500 |
+| **Per-laptop total** | **~$5,583** |
+
+Plus a one-time first-build spares kit:
+- **$58** sane (TPS65987DDH, BQ25713, TPS53676 ×2, 0402 caps, USB-C ×2, ESP32-S3) — PCBs already covered by fab MOQ
+- **$307** cautious (above + spare Hailo-10H)
+
+So a working first prototype: **~$5.6K parts** + **~$1.5K bench tools** you didn't already have.
+
+> **Why no "batch of 5" column?** Fab MOQ already gives you 5 PCBs per design. You don't need 5 SoCs, 5 displays, or 5 batteries. The honest scaling is: PCBs (free, you have them) + a small spares kit of the parts that actually die during bring-up.
 
 ---
 
