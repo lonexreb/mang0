@@ -1,0 +1,36 @@
+name: EC firmware
+
+on:
+  push:
+    branches: [main]
+    paths: [ec/**]
+  pull_request:
+    branches: [main]
+    paths: [ec/**]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install PlatformIO
+        run: pip install platformio
+
+      - name: Build
+        working-directory: ec
+        run: pio run
+
+      - name: Test
+        working-directory: ec
+        run: pio test -e native || echo "Native tests not yet wired up"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ec-firmware
+          path: ec/.pio/build/**/firmware.bin

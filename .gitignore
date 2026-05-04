@@ -1,0 +1,70 @@
+# KiCad temporary files
+*.000
+*.bak
+*.bck
+*.kicad_pcb-bak
+*.kicad_sch-bak
+*-backups/
+*.kicad_prl
+*.sch-bak
+*~
+_autosave-*
+*.tmp
+*-save.pro
+*-save.kicad_pcb
+fp-info-cache
+*.lck
+
+# Netlist files (exported)
+*.net
+
+# Autorouter files
+*.dsn
+*.ses
+
+# Exported BOMs
+*.xml
+*.csv
+
+# Fab outputs
+jlcpcb/
+gerbers/
+*.gbr
+*.drl
+
+# OS junk
+.DS_Store
+
+# Website build
+website/dist/
+website/.astro/
+website/.vercel
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.env
+.env.production
+
+# PlatformIO build
+.pio/
+.pioenvs/
+.piolibdeps/
+build/
+
+# Editors
+.vscode/
+.idea/
+
+# Nix
+result
+result-*
+.direnv/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
