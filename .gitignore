@@ -35,6 +35,11 @@ gerbers/
 # OS junk
 .DS_Store
 
+# Blender working files (regenerate from chassis/blender/generate_starter_scene.py)
+*.blend
+*.blend1
+*.blend@
+
 # Website build
 website/dist/
 website/.astro/
