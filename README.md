@@ -1,4 +1,8 @@
-# mang0
+<p align="center">
+  <img src="./docs/images/banner.svg" alt="mang0 — open AI-native UNIX laptop" width="100%"/>
+</p>
+
+# mang0 🔥
 
 *The first fully open, UNIX-native, AI-native laptop.*
 

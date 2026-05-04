@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" role="img" aria-label="mang0 — open AI-native UNIX laptop">
+  <title>mang0</title>
+  <defs>
+    <radialGradient id="bg" cx="35%" cy="55%" r="80%">
+      <stop offset="0%" stop-color="#1a0a05"/>
+      <stop offset="55%" stop-color="#0b0604"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+
+    <radialGradient id="mango" cx="38%" cy="32%" r="78%">
+      <stop offset="0%" stop-color="#fff3a8"/>
+      <stop offset="22%" stop-color="#ffd24a"/>
+      <stop offset="55%" stop-color="#ff8a1f"/>
+      <stop offset="82%" stop-color="#e63a13"/>
+      <stop offset="100%" stop-color="#7a1605"/>
+    </radialGradient>
+
+    <radialGradient id="glow" cx="50%" cy="55%" r="55%">
+      <stop offset="0%" stop-color="#ff8a1f" stop-opacity="0.65"/>
+      <stop offset="55%" stop-color="#ff3a13" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ff3a13" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="leaf" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5fa845"/>
+      <stop offset="100%" stop-color="#2c5a1f"/>
+    </linearGradient>
+
+    <linearGradient id="flame" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#ffe066"/>
+      <stop offset="40%" stop-color="#ff8a1f"/>
+      <stop offset="80%" stop-color="#ff3a13"/>
+      <stop offset="100%" stop-color="#ff3a13" stop-opacity="0"/>
+    </linearGradient>
+
+    <linearGradient id="wordmark" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#ffd6a8"/>
+    </linearGradient>
+
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+
+    <filter id="heat" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2"/>
+    </filter>
+  </defs>
+
+  <!-- backdrop -->
+  <rect width="1200" height="360" fill="url(#bg)"/>
+
+  <!-- subtle scanlines for AI-native vibe -->
+  <g opacity="0.05">
+    <line x1="0" y1="80" x2="1200" y2="80" stroke="#ff8a1f" stroke-width="1"/>
+    <line x1="0" y1="160" x2="1200" y2="160" stroke="#ff8a1f" stroke-width="1"/>
+    <line x1="0" y1="240" x2="1200" y2="240" stroke="#ff8a1f" stroke-width="1"/>
+    <line x1="0" y1="320" x2="1200" y2="320" stroke="#ff8a1f" stroke-width="1"/>
+  </g>
+
+  <!-- ambient glow behind the mango -->
+  <ellipse cx="245" cy="195" rx="240" ry="190" fill="url(#glow)" filter="url(#soft)"/>
+
+  <!-- flame plume rising from behind the mango -->
+  <g transform="translate(245 60)" opacity="0.85" filter="url(#heat)">
+    <path d="M 0 130
+             C -36 90, -48 40, -18 0
+             C -10 30, 6 40, 18 22
+             C 36 42, 48 80, 28 120
+             Z"
+          fill="url(#flame)"/>
+    <path d="M -8 110
+             C -22 80, -22 50, 0 30
+             C 6 50, 16 56, 24 44
+             C 30 70, 22 96, 8 116
+             Z"
+          fill="#ffd24a" opacity="0.85"/>
+  </g>
+
+  <!-- mango body — asymmetric teardrop -->
+  <g transform="translate(245 195)">
+    <path d="M 0 -120
+             C 90 -120, 160 -60, 160 30
+             C 160 110, 80 170, -10 170
+             C -110 170, -170 100, -160 10
+             C -150 -80, -90 -120, 0 -120 Z"
+          fill="url(#mango)"/>
+
+    <!-- specular highlight -->
+    <ellipse cx="-55" cy="-55" rx="55" ry="32" fill="#fff" opacity="0.32" transform="rotate(-25)"/>
+    <ellipse cx="-30" cy="-70" rx="22" ry="10" fill="#fff" opacity="0.55" transform="rotate(-25)"/>
+
+    <!-- skin freckles -->
+    <g fill="#7a1605" opacity="0.45">
+      <circle cx="40" cy="-40" r="2"/>
+      <circle cx="80" cy="-10" r="2.5"/>
+      <circle cx="60" cy="40" r="2"/>
+      <circle cx="-20" cy="60" r="2"/>
+      <circle cx="20" cy="100" r="2.5"/>
+      <circle cx="-90" cy="20" r="2"/>
+      <circle cx="-110" cy="-30" r="1.8"/>
+      <circle cx="100" cy="60" r="2"/>
+      <circle cx="-60" cy="120" r="2"/>
+    </g>
+
+    <!-- stem -->
+    <rect x="-6" y="-138" width="12" height="22" rx="3" fill="#3d1f0a"/>
+
+    <!-- leaf -->
+    <path d="M 6 -132
+             C 56 -160, 110 -150, 130 -110
+             C 92 -116, 56 -120, 18 -120 Z"
+          fill="url(#leaf)"/>
+    <path d="M 18 -126
+             C 60 -140, 96 -136, 122 -118"
+          fill="none" stroke="#1f3f15" stroke-width="1.5" opacity="0.7"/>
+  </g>
+
+  <!-- wordmark -->
+  <g transform="translate(520 220)">
+    <text font-family="'SF Pro Display', 'Inter', 'Helvetica Neue', system-ui, sans-serif"
+          font-weight="900"
+          font-size="170"
+          letter-spacing="-8"
+          fill="url(#wordmark)">mang0</text>
+
+    <!-- the 0 has a small flame inside it for AI-native nod -->
+    <g transform="translate(442 -88)" opacity="0.92">
+      <path d="M 0 38
+               C -10 20, -10 0, 4 -16
+               C 6 -2, 12 2, 16 -8
+               C 22 4, 22 22, 10 34
+               Z" fill="url(#flame)"/>
+    </g>
+
+    <!-- fire glyph after wordmark -->
+    <g transform="translate(540 -110) scale(1.4)" filter="url(#heat)">
+      <path d="M 18 80
+               C -10 60, -14 30, 6 4
+               C 8 18, 18 22, 22 12
+               C 30 26, 36 50, 24 72
+               Z" fill="url(#flame)"/>
+      <path d="M 18 70
+               C 4 56, 4 36, 16 22
+               C 18 32, 24 36, 28 28
+               C 32 42, 28 58, 20 68
+               Z" fill="#ffd24a" opacity="0.9"/>
+    </g>
+  </g>
+
+  <!-- tagline -->
+  <text x="520" y="270"
+        font-family="'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace"
+        font-size="20"
+        font-weight="500"
+        letter-spacing="2"
+        fill="#ffd6a8" opacity="0.85">
+    open · ai-native · unix · 128 GB on the lap
+  </text>
+
+  <!-- spec strip -->
+  <g transform="translate(520 308)" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" fill="#ff8a1f" opacity="0.7" letter-spacing="1">
+    <text>STRIX HALO</text>
+    <text x="130">·</text>
+    <text x="148">HAILO-10H</text>
+    <text x="270">·</text>
+    <text x="288">OPENTITAN</text>
+    <text x="410">·</text>
+    <text x="428">COREBOOT</text>
+    <text x="540">·</text>
+    <text x="558">NIXOS</text>
+  </g>
+</svg>
