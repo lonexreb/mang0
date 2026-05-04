@@ -66,9 +66,15 @@ mang0/
 ├── docs/          BUILD.md, BOM.md, theory of operation, images
 ├── ci/            GitHub Actions — KiCad ERC/DRC, gerbers, pio, npm
 ├── nix/           flake.nix for reproducible toolchain
-├── hil/           Hardware-in-the-loop test fixtures
+├── hil/           Hardware-in-the-loop test fixtures (real silicon)
+├── sim/           Simulation gates — must pass before fab (virtual silicon)
+│                  thermal (OpenFOAM+Blender), mechanical (Fusion via Claude MCP),
+│                  electrical (ngspice), signal-integrity (OpenEMS),
+│                  firmware (QEMU+Wokwi), workload (Framework Desktop bench)
 └── website/       Marketing + docs site (Astro)
 ```
+
+> **Simulate first, fab second.** mang0 is ~$5.6K of parts with multi-week chassis lead times. The [`sim/`](./sim/) directory holds gates every subsystem must pass before fabrication is allowed. Leverages April 2026 [Claude Creative Connectors](https://www.anthropic.com/news/claude-for-creative-work) for Blender + Fusion to collapse the iteration loop from 30 min to ~2 min per cycle. The connector wiring is in [`.mcp.json`](./.mcp.json).
 
 ---
 
