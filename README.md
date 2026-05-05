@@ -81,10 +81,12 @@ mang0/
 
 ## Where to start
 
-- **Build the laptop:** [`docs/BUILD.md`](./docs/BUILD.md) — step-by-step from empty repo to working unit.
-- **Source the parts:** [`docs/BOM.md`](./docs/BOM.md) — full bill of materials with vendor links.
-- **Understand decisions:** [`CLAUDE.md`](./CLAUDE.md) §8 — 2026 SoC decision matrix.
-- **Contribute:** see open issues. Schematic, layout, mechanical, and firmware all welcome.
+- **The 12-week plan:** [`docs/ROADMAP.md`](./docs/ROADMAP.md) — week-by-week milestones, critical path, decision points, risk table. Scope: Framework Desktop mainboard + custom everything else.
+- **What to order when:** [`docs/SUPPLY-CHAIN.md`](./docs/SUPPLY-CHAIN.md) — lead-time-aware procurement, cart-ready vendor links, weekly cumulative budget.
+- **Bench tools you'll need:** [`docs/INSTRUMENTS.md`](./docs/INSTRUMENTS.md) — three tiers ($1K / $2.6K / $5K+), order in Week 4 to land by Week 11.
+- **Step-by-step build process:** [`docs/BUILD.md`](./docs/BUILD.md) — from empty repo to working unit, technical walkthrough.
+- **Line-item BOM:** [`docs/BOM.md`](./docs/BOM.md) — full bill of materials with per-line vendor links.
+- **Why these picks:** [`CLAUDE.md`](./CLAUDE.md) §8 — 2026 SoC decision matrix.
 
 ---
 
